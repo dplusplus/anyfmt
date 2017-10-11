@@ -66,16 +66,16 @@ do
         do_fmt_command $1
     else
         case ${1} in
-            --debug|-d)
+            -d|--debug)
                 set -x
                 ;;
-            --dry-run|-n)
+            -n|--dry-run)
                 opt_dry_run=true
                 ;;
-            --help|-h)
+            -h|--help)
                 usage
                 ;;
-            --verbose|-v)
+            -v|--verbose)
                 opt_verbose=true
                 ;;
             --)
