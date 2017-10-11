@@ -13,10 +13,15 @@ Usage:
 
 Options:
     -h, --help       show this message
+    -V, --version    show version information
     -n, --dry-run    print message but don't execute
     -v, --verbose    print verbose output
 
 EOF
+}
+
+function version() {
+    echo "0.1.0"
 }
 
 function select_fmt_command() {
@@ -77,6 +82,9 @@ do
                 ;;
             -v|--verbose)
                 opt_verbose=true
+                ;;
+            -V|--version)
+                version
                 ;;
             --)
                 args_is_not_flag=true
