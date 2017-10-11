@@ -2,6 +2,7 @@
 
 opt_dry_run=false
 opt_verbose=false
+args_is_not_flag=false
 
 function usage() {
     cat <<EOF
@@ -61,23 +62,30 @@ fi
 
 while [[ $# -gt 0 ]]
 do
-    case ${1} in
-        --debug|-d)
-            set -x
-            ;;
-        --dry-run|-n)
-            opt_dry_run=true
-            ;;
-        --help|-h)
-            usage
-            ;;
-        --verbose|-v)
-            opt_verbose=true
-            ;;
-        *)
-            do_fmt_command $1
-            ;;
-    esac
+    if $args_is_not_flag ; then
+        do_fmt_command $1
+    else
+        case ${1} in
+            --debug|-d)
+                set -x
+                ;;
+            --dry-run|-n)
+                opt_dry_run=true
+                ;;
+            --help|-h)
+                usage
+                ;;
+            --verbose|-v)
+                opt_verbose=true
+                ;;
+            --)
+                args_is_not_flag=true
+                ;;
+            *)
+                do_fmt_command $1
+                ;;
+        esac
+    fi
 
     shift
 done
