@@ -1,7 +1,51 @@
 #!/bin/bash
 
-while [ "$1" != "" ]
+opt_dry_run=false
+opt_verbose=false
+
+function usage() {
+    cat <<EOF
+$(basename ${0}) is a tool for execute **fmt depending on file extension.
+
+Usage:
+    $(basename ${0}) [<options>] file1(, file2, ...)
+
+Options:
+    --dry-run, -n    print message but don't execute
+    --help, -h       print this message
+    --verbose, -v    print verbose message
+
+EOF
+}
+
+function fmt() {
+    echo "$@"
+}
+
+if [[ $# -eq 0 ]] ; then
+    usage
+    exit
+fi
+
+while [[ $# -gt 0 ]]
 do
-    echo $1
+    case ${1} in
+        --debug|-d)
+            set -x
+            ;;
+        --dry-run|-n)
+            opt_dry_run=true
+            ;;
+        --help|-h)
+            usage
+            ;;
+        --verbose|-v)
+            opt_verbose=true
+            ;;
+        *)
+            fmt $1
+            ;;
+    esac
+
     shift
 done
