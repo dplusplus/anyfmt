@@ -11,9 +11,9 @@ Usage:
     $(basename ${0}) [<options>] file1(, file2, ...)
 
 Options:
-    --dry-run, -n    print message but don't execute
-    --help, -h       print this message
-    --verbose, -v    print verbose message
+    -h, --help       show this message
+    -n, --dry-run    print message but don't execute
+    -v, --verbose    print verbose output
 
 EOF
 }
