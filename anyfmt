@@ -18,8 +18,33 @@ Options:
 EOF
 }
 
-function fmt() {
-    echo "$@"
+function select_fmt_command() {
+    if [[ $1 =~ \.go$ ]] ; then
+        echo "gofmt"
+    elif [[ $1 =~ \.rs$ ]] ; then
+        echo "rustfmt"
+    else
+        echo ""
+    fi
+}
+
+function do_fmt_command() {
+    fmt_command=$(select_fmt_command $1)
+
+    if [[ $fmt_command == "" ]] ; then
+        echo $1 ": Suitable fmt command is not found."
+        return
+    fi
+
+    if $opt_dry_run ; then
+        echo $fmt_command $1 "(dry-run)"
+    else
+        if $opt_verbose ; then
+           echo $fmt_command $1
+        fi
+
+        $($fmt_command $1)
+    fi
 }
 
 if [[ $# -eq 0 ]] ; then
@@ -43,7 +68,7 @@ do
             opt_verbose=true
             ;;
         *)
-            fmt $1
+            do_fmt_command $1
             ;;
     esac
 
