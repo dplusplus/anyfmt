@@ -28,19 +28,26 @@ function select_fmt_command() {
     fi
 }
 
+function cecho() {
+    echo -e "\033[${1}m${2}\033[m"
+}
+RED=31
+YELLOW=32
+GREEN=33
+
 function do_fmt_command() {
     fmt_command=$(select_fmt_command $1)
 
     if [[ $fmt_command == "" ]] ; then
-        echo $1 ": Suitable fmt command is not found."
+        cecho $RED "${1}: Suitable fmt command is not found."
         return
     fi
 
     if $opt_dry_run ; then
-        echo $fmt_command $1 "(dry-run)"
+        cecho $GREEN "${fmt_command} ${1} (dry-run)"
     else
         if $opt_verbose ; then
-           echo $fmt_command $1
+            cecho $YELLOW "[${fmt_command} ${1}]"
         fi
 
         $($fmt_command $1)
